@@ -444,7 +444,7 @@
 
             <canvas id="signature-pad"></canvas>
 
-            
+
 
             <div class="signature-controls">
 
@@ -484,7 +484,7 @@
 
         const debugInfo = document.getElementById('debug-info');
 
-        
+
 
         // Fonction pour extraire l'ID
 
@@ -502,7 +502,7 @@
 
             }
 
-            
+
 
             // Essayer les paramètres de requête (?id=)
 
@@ -518,7 +518,7 @@
 
             }
 
-            
+
 
             console.log('✗ Aucun ID trouvé');
 
@@ -550,6 +550,7 @@
 
         `;
 
+        debugInfo.style.display = 'block';
         debugInfo.style.display = 'none';
 
 
@@ -621,116 +622,96 @@
 
 
         // Soumettre la signature
-async function submitSignature() {
-    if (signaturePad.isEmpty()) {
-        showMessage('error', 'Veuillez signer avant de valider.');
-        return;
-    }
 
-    if (!submissionId) {
-        showMessage('error', 'ID de soumission manquant.');
-        return;
-    }
+        async function submitSignature() {
 
-    const submitBtn = document.getElementById('submit-btn');
-    submitBtn.disabled = true;
-    showMessage('loading', 'Envoi en cours...');
+            if (signaturePad.isEmpty()) {
 
-    try {
-        const signatureDataUrl = signaturePad.toDataURL('image/png');
+                showMessage('error', 'Veuillez signer avant de valider.');
 
-        console.log('=== DÉBUT ENVOI ===');
-        console.log('URL:', APPS_SCRIPT_URL);
-        console.log('ID:', submissionId);
-        console.log('Signature length:', signatureDataUrl.length);
-
-        // Tentative 1 : avec fetch et mode cors
-        try {
-            const response = await fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    submissionId: submissionId,
-                    signature: signatureDataUrl
-                }),
-                redirect: 'follow'
-            });
-
-            console.log('Response status:', response.status);
-            console.log('Response OK:', response.ok);
-            
-            if (response.ok || response.type === 'opaque') {
-                showMessage('success', '✓ Signature enregistrée avec succès ! Vérifiez votre Google Sheet.');
-                signaturePad.off();
-                document.querySelector('.btn-clear').disabled = true;
-                
-                setTimeout(() => {
-                    showMessage('success', '✓ Vous pouvez fermer cette page. Le PDF signé est dans Google Sheets.');
-                }, 3000);
-                
                 return;
+
             }
-        } catch (fetchError) {
-            console.log('Fetch avec CORS a échoué, tentative avec no-cors:', fetchError);
+
+
+
+            if (!submissionId) {
+
+                showMessage('error', 'ID de soumission manquant.');
+
+                return;
+
+            }
+
+
+
+            const submitBtn = document.getElementById('submit-btn');
+
+            submitBtn.disabled = true;
+
+            showMessage('loading', 'Traitement en cours...');
+
+
+
+            try {
+
+                const signatureDataUrl = signaturePad.toDataURL('image/png');
+
+
+
+                console.log('Envoi vers:', APPS_SCRIPT_URL);
+
+                console.log('ID:', submissionId);
+
+
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+
+                    method: 'POST',
+
+                    mode: 'no-cors',
+
+                    headers: {
+
+                        'Content-Type': 'application/json',
+
+                    },
+
+                    body: JSON.stringify({
+
+                        submissionId: submissionId,
+
+                        signature: signatureDataUrl
+
+                    })
+
+                });
+
+
+
+                // Avec no-cors, on ne peut pas lire la réponse
+
+                showMessage('success', '✓ Signature enregistrée avec succès ! Vous pouvez fermer cette page.');
+
+
+
+                signaturePad.off();
+
+                document.querySelector('.btn-clear').disabled = true;
+
+
+
+            } catch (error) {
+
+                console.error('Erreur:', error);
+
+                showMessage('error', 'Une erreur est survenue. Veuillez réessayer ou contacter AR Conseils.');
+
+                submitBtn.disabled = false;
+
+            }
+
         }
-
-        // Tentative 2 : avec no-cors (fallback)
-        await fetch(APPS_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                submissionId: submissionId,
-                signature: signatureDataUrl
-            })
-        });
-
-        console.log('Envoi no-cors terminé');
-        showMessage('success', '✓ Signature envoyée ! Vérifiez votre Google Sheet dans 10 secondes.');
-        
-        signaturePad.off();
-        document.querySelector('.btn-clear').disabled = true;
-
-        setTimeout(() => {
-            showMessage('success', '✓ Si le PDF n\'apparaît pas dans Sheets, vérifiez les logs Apps Script.');
-        }, 3000);
-
-    } catch (error) {
-        console.error('=== ERREUR COMPLÈTE ===');
-        console.error('Type:', error.name);
-        console.error('Message:', error.message);
-        console.error('Stack:', error.stack);
-        
-        showMessage('error', 'Erreur: ' + error.message + '. Vérifiez la console (F12) et les logs Apps Script.');
-        submitBtn.disabled = false;
-    }
-}
-```
-
-6. **Commit changes**
-
----
-
-## 🧪 Test avec les nouveaux logs
-
-Maintenant, quand vous signez :
-
-1. **Ouvrez la console du navigateur** (F12 ou Clic droit > Inspecter > Console)
-2. **Signez et validez**
-3. **Regardez les logs** dans la console
-
-Vous devriez voir :
-```
-=== DÉBUT ENVOI ===
-URL: https://script.google.com/...
-ID: abc-123-xyz
-Signature length: 5432
-Response status: 200
-Response OK: true
 
 
 
@@ -742,7 +723,7 @@ Response OK: true
 
             statusDiv.className = `status-message ${type}`;
 
-            
+
 
             if (type === 'loading') {
 
@@ -754,7 +735,7 @@ Response OK: true
 
             }
 
-            
+
 
             statusDiv.style.display = 'block';
 
