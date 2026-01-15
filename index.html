@@ -444,7 +444,7 @@
 
             <canvas id="signature-pad"></canvas>
 
-
+            
 
             <div class="signature-controls">
 
@@ -484,7 +484,7 @@
 
         const debugInfo = document.getElementById('debug-info');
 
-
+        
 
         // Fonction pour extraire l'ID
 
@@ -502,7 +502,7 @@
 
             }
 
-
+            
 
             // Essayer les paramètres de requête (?id=)
 
@@ -518,7 +518,7 @@
 
             }
 
-
+            
 
             console.log('✗ Aucun ID trouvé');
 
@@ -550,7 +550,6 @@
 
         `;
 
-        debugInfo.style.display = 'block';
         debugInfo.style.display = 'none';
 
 
@@ -693,7 +692,7 @@
 
                 showMessage('success', '✓ Signature enregistrée avec succès ! Vous pouvez fermer cette page.');
 
-
+                
 
                 signaturePad.off();
 
@@ -723,7 +722,7 @@
 
             statusDiv.className = `status-message ${type}`;
 
-
+            
 
             if (type === 'loading') {
 
@@ -735,7 +734,7 @@
 
             }
 
-
+            
 
             statusDiv.style.display = 'block';
 
