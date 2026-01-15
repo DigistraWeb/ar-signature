@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Signature - AR Conseils</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        body {
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+        }
+
+
+
+        .container {
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+            max-width: 600px;
+
+            width: 100%;
+
+            padding: 40px;
+
+        }
+
+
+
+        .logo {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+
+        .logo h1 {
+
+            color: #667eea;
+
+            font-size: 28px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+
+        .logo p {
+
+            color: #666;
+
+            font-size: 14px;
+
+        }
+
+
+
+        .info-box {
+
+            background: #f8f9fa;
+
+            border-left: 4px solid #667eea;
+
+            padding: 15px;
+
+            margin-bottom: 30px;
+
+            border-radius: 4px;
+
+        }
+
+
+
+        .info-box h2 {
+
+            color: #333;
+
+            font-size: 18px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .info-box p {
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+        }
+
+
+
+        .signature-section {
+
+            margin: 30px 0;
+
+        }
+
+
+
+        .signature-section h3 {
+
+            color: #333;
+
+            font-size: 16px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+
+        #signature-pad {
+
+            border: 2px solid #ddd;
+
+            border-radius: 8px;
+
+            width: 100%;
+
+            height: 200px;
+
+            touch-action: none;
+
+            background: white;
+
+        }
+
+
+
+        .signature-controls {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 15px;
+
+        }
+
+
+
+        button {
+
+            flex: 1;
+
+            padding: 12px 24px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+
+        }
+
+
+
+        .btn-clear {
+
+            background: #f44336;
+
+            color: white;
+
+        }
+
+
+
+        .btn-clear:hover {
+
+            background: #d32f2f;
+
+            transform: translateY(-2px);
+
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+
+        }
+
+
+
+        .btn-submit {
+
+            background: #4CAF50;
+
+            color: white;
+
+        }
+
+
+
+        .btn-submit:hover:not(:disabled) {
+
+            background: #45a049;
+
+            transform: translateY(-2px);
+
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+
+        }
+
+
+
+        .btn-submit:disabled {
+
+            background: #ccc;
+
+            cursor: not-allowed;
+
+        }
+
+
+
+        .status-message {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            display: none;
+
+        }
+
+
+
+        .status-message.success {
+
+            background: #d4edda;
+
+            color: #155724;
+
+            border: 1px solid #c3e6cb;
+
+        }
+
+
+
+        .status-message.error {
+
+            background: #f8d7da;
+
+            color: #721c24;
+
+            border: 1px solid #f5c6cb;
+
+        }
+
+
+
+        .status-message.loading {
+
+            background: #d1ecf1;
+
+            color: #0c5460;
+
+            border: 1px solid #bee5eb;
+
+        }
+
+
+
+        .spinner {
+
+            display: inline-block;
+
+            width: 20px;
+
+            height: 20px;
+
+            border: 3px solid rgba(0,0,0,.1);
+
+            border-radius: 50%;
+
+            border-top-color: #0c5460;
+
+            animation: spin 1s ease-in-out infinite;
+
+            margin-right: 10px;
+
+        }
+
+
+
+        @keyframes spin {
+
+            to { transform: rotate(360deg); }
+
+        }
+
+
+
+        .footer {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+            color: #999;
+
+            font-size: 12px;
+
+        }
+
+
+
+        .debug-info {
+
+            background: #fff3cd;
+
+            border: 1px solid #ffc107;
+
+            padding: 10px;
+
+            margin-bottom: 20px;
+
+            border-radius: 4px;
+
+            font-size: 12px;
+
+            font-family: monospace;
+
+            display: none;
+
+        }
+
+
+
+        @media (max-width: 640px) {
+
+            .container {
+
+                padding: 20px;
+
+            }
+
+
+
+            .signature-controls {
+
+                flex-direction: column;
+
+            }
+
+
+
+            button {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">
+
+            <h1>AR Conseils</h1>
+
+            <p>Mandat de recherche LPP</p>
+
+        </div>
+
+
+
+        <div class="debug-info" id="debug-info"></div>
+
+
+
+        <div class="info-box">
+
+            <h2>📝 Signature électronique</h2>
+
+            <p>Veuillez signer ci-dessous pour finaliser votre demande de mandat de recherche LPP. Votre signature sera intégrée dans le document officiel.</p>
+
+        </div>
+
+
+
+        <div class="signature-section">
+
+            <h3>Signez dans le cadre ci-dessous :</h3>
+
+            <canvas id="signature-pad"></canvas>
+
+            
+
+            <div class="signature-controls">
+
+                <button class="btn-clear" onclick="clearSignature()">🗑️ Effacer</button>
+
+                <button class="btn-submit" id="submit-btn" onclick="submitSignature()">✓ Valider la signature</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="status-message" id="status-message"></div>
+
+
+
+        <div class="footer">
+
+            <p>&copy; 2026 AR Conseils - Tous droits réservés</p>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        // Configuration - REMPLACEZ PAR VOTRE URL APPS SCRIPT
+
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxounnxe_jso9QrXA8Vy4jeV4eHVvIDApvmYtn30ecqdv5KK4_piQ4AXtw522LHfto/execz';
+
+
+
+        // Debug
+
+        const debugInfo = document.getElementById('debug-info');
+
+        
+
+        // Fonction pour extraire l'ID
+
+        function getSubmissionId() {
+
+            // Essayer le hash (#)
+
+            let id = window.location.hash.substring(1);
+
+            if (id && id.trim() !== '') {
+
+                console.log('✓ ID trouvé via hash:', id);
+
+                return id;
+
+            }
+
+            
+
+            // Essayer les paramètres de requête (?id=)
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            id = urlParams.get('id');
+
+            if (id && id.trim() !== '') {
+
+                console.log('✓ ID trouvé via query:', id);
+
+                return id;
+
+            }
+
+            
+
+            console.log('✗ Aucun ID trouvé');
+
+            return null;
+
+        }
+
+
+
+        // Récupérer l'ID
+
+        const submissionId = getSubmissionId();
+
+
+
+        // Afficher les infos de debug
+
+        debugInfo.innerHTML = `
+
+            <strong>Debug:</strong><br>
+
+            URL: ${window.location.href}<br>
+
+            Hash: ${window.location.hash || '(vide)'}<br>
+
+            Search: ${window.location.search || '(vide)'}<br>
+
+            ID: ${submissionId || '(non trouvé)'}
+
+        `;
+
+        debugInfo.style.display = 'block';
+
+
+
+        if (!submissionId) {
+
+            showMessage('error', 'Erreur : Lien de signature invalide. Le lien doit contenir un ID.');
+
+            document.getElementById('submit-btn').disabled = true;
+
+        } else {
+
+            console.log('✓ ID de soumission valide:', submissionId);
+
+        }
+
+
+
+        // Initialiser SignaturePad
+
+        const canvas = document.getElementById('signature-pad');
+
+        const signaturePad = new SignaturePad(canvas, {
+
+            backgroundColor: 'rgb(255, 255, 255)',
+
+            penColor: 'rgb(0, 0, 0)',
+
+            minWidth: 1,
+
+            maxWidth: 3
+
+        });
+
+
+
+        // Ajuster la taille du canvas
+
+        function resizeCanvas() {
+
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+            canvas.width = canvas.offsetWidth * ratio;
+
+            canvas.height = canvas.offsetHeight * ratio;
+
+            canvas.getContext('2d').scale(ratio, ratio);
+
+            signaturePad.clear();
+
+        }
+
+
+
+        window.addEventListener('resize', resizeCanvas);
+
+        resizeCanvas();
+
+
+
+        // Effacer la signature
+
+        function clearSignature() {
+
+            signaturePad.clear();
+
+        }
+
+
+
+        // Soumettre la signature
+
+        async function submitSignature() {
+
+            if (signaturePad.isEmpty()) {
+
+                showMessage('error', 'Veuillez signer avant de valider.');
+
+                return;
+
+            }
+
+
+
+            if (!submissionId) {
+
+                showMessage('error', 'ID de soumission manquant.');
+
+                return;
+
+            }
+
+
+
+            const submitBtn = document.getElementById('submit-btn');
+
+            submitBtn.disabled = true;
+
+            showMessage('loading', 'Traitement en cours...');
+
+
+
+            try {
+
+                const signatureDataUrl = signaturePad.toDataURL('image/png');
+
+
+
+                console.log('Envoi vers:', APPS_SCRIPT_URL);
+
+                console.log('ID:', submissionId);
+
+
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+
+                    method: 'POST',
+
+                    mode: 'no-cors',
+
+                    headers: {
+
+                        'Content-Type': 'application/json',
+
+                    },
+
+                    body: JSON.stringify({
+
+                        submissionId: submissionId,
+
+                        signature: signatureDataUrl
+
+                    })
+
+                });
+
+
+
+                // Avec no-cors, on ne peut pas lire la réponse
+
+                showMessage('success', '✓ Signature enregistrée avec succès ! Vous pouvez fermer cette page.');
+
+                
+
+                signaturePad.off();
+
+                document.querySelector('.btn-clear').disabled = true;
+
+
+
+            } catch (error) {
+
+                console.error('Erreur:', error);
+
+                showMessage('error', 'Une erreur est survenue. Veuillez réessayer ou contacter AR Conseils.');
+
+                submitBtn.disabled = false;
+
+            }
+
+        }
+
+
+
+        // Afficher les messages
+
+        function showMessage(type, message) {
+
+            const statusDiv = document.getElementById('status-message');
+
+            statusDiv.className = `status-message ${type}`;
+
+            
+
+            if (type === 'loading') {
+
+                statusDiv.innerHTML = `<span class="spinner"></span>${message}`;
+
+            } else {
+
+                statusDiv.innerHTML = message;
+
+            }
+
+            
+
+            statusDiv.style.display = 'block';
+
+        }
+
+    </script>
+
+</body>
+
+</html>
